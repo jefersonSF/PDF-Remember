@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Common/Common.csproj" Id="0dd09f89-34b7-44d7-9fd9-bb740a81d325" />
+  <Project Path="Domain/Domain.csproj" Id="c8936f2c-cf98-4c44-b1e2-5dec5efeafc6" />
+  <Project Path="Models/Models.csproj" Id="d9b225c7-720c-4976-9104-bdff936e603f" />
+  <Project Path="PDFViewLastReadedPage/PDFViewLastReadedPage.csproj" />
+  <Project Path="Repository/Repository.csproj" Id="6f9800da-e06c-4f3d-8174-6b8af9bf381c" />
+  <Project Path="Services/Services.csproj" Id="41f613fe-527f-4aad-804a-4d153b265439" />
+</Solution>

@@ -1,0 +1,23 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <sys:String x:Key="Menu">☰ Menu</sys:String>
+    <sys:String x:Key="OpenPdf">Open PDF</sys:String>
+    <sys:String x:Key="Recents">Recents</sys:String>
+    <sys:String x:Key="Preferences">Preferences</sys:String>
+    <sys:String x:Key="VisualQuality">Visual quality</sys:String>
+    <sys:String x:Key="Language">Language</sys:String>
+    <sys:String x:Key="OpenFolder">Open folder</sys:String>
+    <sys:String x:Key="RemoveFromRecents">Remove from recents</sys:String>
+    <sys:String x:Key="Page">Page</sys:String>
+    <sys:String x:Key="PreviousPage">Previous page</sys:String>
+    <sys:String x:Key="NextPage">Next page</sys:String>
+    <sys:String x:Key="CurrentPage">Current page</sys:String>
+    <sys:String x:Key="ZoomIn">Zoom in</sys:String>
+    <sys:String x:Key="ZoomOut">Zoom out</sys:String>
+    <sys:String x:Key="LangPtBR">Portuguese-BR</sys:String>
+    <sys:String x:Key="LangEnUS">English-US</sys:String>
+    <sys:String x:Key="Copy">Copy</sys:String>
+
+</ResourceDictionary>

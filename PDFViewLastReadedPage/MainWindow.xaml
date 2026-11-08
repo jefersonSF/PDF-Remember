@@ -1,0 +1,326 @@
+﻿<Window x:Class="PDFViewLastReadedPage.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pdf="clr-namespace:PdfiumViewer;assembly=PdfiumViewer"
+        Title="PDF Remember"
+        Width="1000"
+        Height="700"
+        KeyDown="window_KeyDown"
+        PreviewKeyDown="window_PreviewKeyDown"
+        PreviewKeyUp="window_PreviewKeyUp"
+        Background="#1C1C1C"
+        AllowDrop="True"
+        DragOver="Window_DragOver"
+        Drop="Window_Drop"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        WindowState="Normal"
+        >
+
+    <Window.Resources>
+        <Style x:Key="RecentMenuItemStyle"
+       TargetType="{x:Type MenuItem}">
+
+            <Setter Property="HorizontalContentAlignment"
+            Value="Stretch"/>
+
+            <Setter Property="VerticalContentAlignment"
+            Value="Center"/>
+
+            <Setter Property="Padding"
+            Value="0"/>
+
+            <Setter Property="Margin"
+            Value="0"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+
+                        <Border
+                    x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderThickness="0"
+                    Padding="0"
+                    Margin="0">
+
+                            <ContentPresenter
+                        ContentSource="Header"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Margin="0"
+                        SnapsToDevicePixels="True"/>
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- Hover -->
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="border"
+                                Property="Background"
+                                Value="#E5E5E5"/>
+                            </Trigger>
+
+                            <!-- Desabilitado -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border"
+                                Property="Opacity"
+                                Value="0.5"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="#1C1C1C" >
+
+        <!-- Barra de título personalizada -->
+        <Grid Height="35"
+              Background="#1C1C1C"
+              DockPanel.Dock="Top"
+              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+              >
+
+            <TextBlock Text="PDF Remember"
+                       VerticalAlignment="Center"
+                       Margin="10,0"
+                       Foreground="White"
+                       />
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <StackPanel.Resources>
+
+                    <!-- Estilo padrão dos botões da barra de título -->
+                    <Style x:Key="TitleBarButton"
+                           TargetType="Button">
+
+                        <Setter Property="Width" Value="45"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <!-- Mouse sobre o botão -->
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#444444"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!-- Estilo específico do botão Fechar -->
+                    <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource TitleBarButton}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E81123"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+
+                <!-- Minimizar -->
+                <Button Content="➖" Style="{StaticResource TitleBarButton}" Click="ButtonMinimize_Click"/>
+
+                <!-- Maximizar -->
+                <Button Content="▣" Style="{StaticResource TitleBarButton}" Click="ButtonMaxmize_Click"/>
+
+                <!-- Fechar -->
+                <Button Content="❌" Style="{StaticResource CloseButton}" Click="ButtonClose_Click"/>
+            </StackPanel>
+
+        </Grid>
+
+        <!-- Barra de ferramentas -->
+        <ToolBar DockPanel.Dock="Top" Height="45">
+            <Menu Margin="0">
+                <MenuItem x:Name="menuPrincipal"
+                  Height="45"
+                  Width="80"
+                  Background="#2D2D30"
+                  Foreground="Black"
+                  Padding="5,8,5,5"
+                  VerticalAlignment="Stretch">
+                    <MenuItem.Header>
+                        <TextBlock Text="{DynamicResource Menu}" FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+
+                                    <!-- Estado normal -->
+                                    <Setter Property="Foreground" Value="#F2F2F2"/>
+
+                                    <Style.Triggers>
+
+                                        <!-- Mouse sobre o texto -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="DarkGoldenrod"/>
+                                        </Trigger>
+
+                                        <!-- Submenu do MenuItem está aberto -->
+                                        <DataTrigger Binding="{Binding IsSubmenuOpen, ElementName=menuPrincipal}" Value="True">
+                                            <Setter Property="Foreground" Value="#1c1c1c"/>
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </MenuItem.Header>
+
+                    <MenuItem Header="{DynamicResource OpenPdf}" Click="Abrir_Click"/>
+                    <MenuItem Header="{DynamicResource Recents}" x:Name="menuRecents"/>
+
+                    <MenuItem Header="{DynamicResource Preferences}">
+                        <MenuItem Header="{DynamicResource VisualQuality}" x:Name="menuVisualQuality"/>
+                        <MenuItem Header="{DynamicResource Language}" x:Name="menuLanguage" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+
+            <TextBlock x:Name="txtFileName"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Left"
+                       Padding="5,8,5,5"
+                       Width="260"
+                       Height="38"
+                       FontSize="16"
+                       Background="SlateGray"
+                       Foreground="WhiteSmoke"/>
+            <Separator />
+
+            <!-- Página anterior -->
+            <Button Content="◀"
+                    Width="35"
+                    Margin="2"
+                    Click="Anterior_Click"
+                    ToolTip="{DynamicResource PreviousPage}"/>
+
+
+            <TextBlock Text="{DynamicResource Page}"
+                       VerticalAlignment="Center"
+                       Margin="10,0,3,0"/>
+
+
+            <TextBox x:Name="txtPagina"
+                     Width="45"
+                     Text="1"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Margin="2"
+                     KeyDown="txtPagina_KeyDown"
+                     ToolTip="{DynamicResource CurrentPage}"/>
+
+
+            <TextBlock Text="/"
+                       VerticalAlignment="Center"
+                       Margin="3,0"/>
+
+
+            <TextBlock x:Name="txtTotalPaginas"
+                       Text="0"
+                       VerticalAlignment="Center"
+                       Margin="3,0,10,0"/>
+
+
+            <!-- Próxima página -->
+            <Button Content="▶"
+                    Width="35"
+                    Margin="2"
+                    Click="Proxima_Click"
+                    ToolTip="{DynamicResource NextPage}"/>
+
+
+            <Separator />
+
+
+            <!-- Zoom diminuir -->
+            <Button Content="➖"
+                    Width="35"
+                    Margin="2"
+                    Click="ZoomMenos_Click"
+                    ToolTip="{DynamicResource ZoomOut}"/>
+
+
+            <TextBlock x:Name="txtZoom"
+                       Text="100%"
+                       Width="55"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+
+            <!-- Zoom aumentar -->
+            <Button Content="➕"
+                    Width="35"
+                    Margin="2"
+                    Click="ZoomMais_Click"
+                    ToolTip="{DynamicResource ZoomIn}"/>
+
+        </ToolBar>
+
+
+        <!-- Visualizador -->
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="926*"/>
+                <ColumnDefinition Width="53*"/>
+                <ColumnDefinition Width="21*"/>
+
+            </Grid.ColumnDefinitions>
+
+
+            <pdf:PDFViewer x:Name="pdfViewer"
+                           Grid.ColumnSpan="3"
+                           ScrollViewer.ScrollChanged="PdfViewer_ScrollChanged"
+                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                           PreviewMouseWheel="PdfViewr_PreviewMouseWheel"
+                           PreviewMouseLeftButtonDown="pdfViewer_PreviewMouseLeftButtonDown"
+                           PreviewMouseLeftButtonUp="pdfViewer_PreviewMouseLeftButtonUp"
+                           PreviewMouseMove="pdfViewer_PreviewMouseMove">
+
+                <pdf:PDFViewer.ContextMenu>
+
+                    <ContextMenu>
+
+                        <MenuItem Header="{DynamicResource Copy}"
+                                  Click="Copy_Click"/>
+
+                    </ContextMenu>
+
+                </pdf:PDFViewer.ContextMenu>
+
+            </pdf:PDFViewer>
+
+        </Grid>
+
+    </DockPanel>
+
+</Window>
