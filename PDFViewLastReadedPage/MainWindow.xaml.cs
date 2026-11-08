@@ -60,8 +60,7 @@ namespace PDFViewLastReadedPage
                 _windowSizeSettings.MaximizeWindow();
             };
             InitializeComponent();
-
-            filePath = filePath ?? @"D:\Livros-apostilas\C#\Programação C# 10 - Ian Griffiths\Capítulo 6. Herança.pdf";
+            
             if (string.IsNullOrWhiteSpace(filePath)) return;
 
             if (!File.Exists(filePath))
