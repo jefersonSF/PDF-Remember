@@ -4,17 +4,18 @@ using Microsoft.Win32;
 using Models;
 using PdfiumViewer;
 using PdfiumViewer.Core;
+using PDFViewLastReadedPage.Configuration;
 using Services;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using PDFViewLastReadedPage.Configuration;
-using System.Drawing;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
 
 namespace PDFViewLastReadedPage
 {
@@ -58,7 +59,7 @@ namespace PDFViewLastReadedPage
                 _windowSizeSettings.CentralizeWindow();
                 _windowSizeSettings.MaximizeWindow();
             };
-            InitializeComponent();            
+            InitializeComponent();
 
             filePath = filePath ?? @"D:\Livros-apostilas\C#\Programação C# 10 - Ian Griffiths\Capítulo 6. Herança.pdf";
             if (string.IsNullOrWhiteSpace(filePath)) return;
@@ -708,6 +709,15 @@ namespace PDFViewLastReadedPage
             finally {
                 this.Cursor = Cursors.Arrow;
             }
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow aboutWindow = new AboutWindow()
+            {
+                Owner = this
+            };
+            aboutWindow.ShowDialog();
         }
     }
 }

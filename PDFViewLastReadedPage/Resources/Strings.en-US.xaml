@@ -19,5 +19,7 @@
     <sys:String x:Key="LangPtBR">Portuguese-BR</sys:String>
     <sys:String x:Key="LangEnUS">English-US</sys:String>
     <sys:String x:Key="Copy">Copy</sys:String>
+    <sys:String x:Key="Help">Help</sys:String>
+    <sys:String x:Key="About">About</sys:String>    
 
 </ResourceDictionary>

@@ -14,12 +14,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\pdf-read.ico" />
+    <None Remove="Resources\pdf-read48x48.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="PdfiumViewer.Net.WPF" Version="3.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\pdf-read.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\pdf-read48x48.ico" />
   </ItemGroup>
 
 </Project>
