@@ -17,10 +17,10 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v6
 
-      - name: Setup .NET 8
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Restore dependencies
         run: dotnet restore ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj
@@ -39,16 +39,20 @@ jobs:
           --output ./publish
 
       - name: Create ZIP package
+        shell: pwsh
         run: |
-          mkdir -p artifacts
-          cd publish
-          zip -r "../artifacts/PDFViewLastReadedPage-${GITHUB_REF_NAME}.zip" .
+          New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+
+          Compress-Archive `
+            -Path "./publish/*" `
+            -DestinationPath "./artifacts/PDFViewLastReadedPage-$env:GITHUB_REF_NAME.zip" `
+            -Force
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" `
-            "artifacts/PDFViewLastReadedPage-${GITHUB_REF_NAME}.zip" `
-            --title "$GITHUB_REF_NAME" `
+          gh release create "$env:GITHUB_REF_NAME" `
+            "artifacts/PDFViewLastReadedPage-$env:GITHUB_REF_NAME.zip" `
+            --title "$env:GITHUB_REF_NAME" `
             --generate-notes
