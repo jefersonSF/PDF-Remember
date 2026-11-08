@@ -27,15 +27,15 @@ jobs:
 
       - name: Build application
         run: |
-          dotnet build ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj \
-          --configuration Release \
+          dotnet build ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj `
+          --configuration Release `
           --no-restore
 
       - name: Publish application
         run: |
-          dotnet publish ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj \
-          --configuration Release \
-          --no-build \
+          dotnet publish ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj `
+          --configuration Release `
+          --no-build `
           --output ./publish
 
       - name: Create ZIP package
@@ -48,7 +48,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            "artifacts/PDFViewLastReadedPage-${GITHUB_REF_NAME}.zip" \
-            --title "$GITHUB_REF_NAME" \
+          gh release create "$GITHUB_REF_NAME" `
+            "artifacts/PDFViewLastReadedPage-${GITHUB_REF_NAME}.zip" `
+            --title "$GITHUB_REF_NAME" `
             --generate-notes
