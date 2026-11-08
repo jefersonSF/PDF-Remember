@@ -1,0 +1,54 @@
+
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj
+
+      - name: Build application
+        run: |
+          dotnet build ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj \
+          --configuration Release \
+          --no-restore
+
+      - name: Publish application
+        run: |
+          dotnet publish ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj \
+          --configuration Release \
+          --no-build \
+          --output ./publish
+
+      - name: Create ZIP package
+        run: |
+          mkdir -p artifacts
+          cd publish
+          zip -r "../artifacts/PDFViewLastReadedPage-${GITHUB_REF_NAME}.zip" .
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "artifacts/PDFViewLastReadedPage-${GITHUB_REF_NAME}.zip" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
