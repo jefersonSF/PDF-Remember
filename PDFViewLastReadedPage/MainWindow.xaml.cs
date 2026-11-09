@@ -346,8 +346,9 @@ namespace PDFViewLastReadedPage
                 _pdfInfo = _pdfInfoResult;
                 //Delay para garantir que o pdf já foi carregado
                 await Dispatcher.InvokeAsync(
-                    () =>
+                    async () =>
                     {
+                        await Task.Delay(500);
                         SetActualPage(_pdfInfo.NumPage);                        
                     },
                     System.Windows.Threading.DispatcherPriority.Render
