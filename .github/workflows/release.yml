@@ -33,7 +33,7 @@ jobs:
 
       - name: Publish application
         run: |
-          dotnet publish ./PDFViewLastReadedPage/PDFViewLastReadedPage.csproj `
+          dotnet publish ./PDFRemember/PDFRemember.csproj `
           --configuration Release `
           --no-build `
           --output ./publish
@@ -45,7 +45,7 @@ jobs:
 
           Compress-Archive `
             -Path "./publish/*" `
-            -DestinationPath "./artifacts/PDFViewLastReadedPage-$env:GITHUB_REF_NAME.zip" `
+            -DestinationPath "./artifacts/PDFRemember-$env:GITHUB_REF_NAME.zip" `
             -Force
 
       - name: Create GitHub Release
@@ -53,6 +53,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "$env:GITHUB_REF_NAME" `
-            "artifacts/PDFViewLastReadedPage-$env:GITHUB_REF_NAME.zip" `
+            "artifacts/PDFRemember-$env:GITHUB_REF_NAME.zip" `
             --title "$env:GITHUB_REF_NAME" `
             --generate-notes
