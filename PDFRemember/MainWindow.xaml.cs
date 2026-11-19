@@ -412,23 +412,32 @@ namespace PDFViewLastReadedPage
 
         private void Anterior_Click(object sender, RoutedEventArgs e)
         {
-            int currentPage = Math.Max(pdfViewer.Page - 1, 0);
-            pdfViewer.Page = currentPage;
-            txtPagina.Text = (currentPage + 1).ToString();
-            _currentPage = currentPage + 1;
+            if (!string.IsNullOrEmpty(_pdfInfo?.FileName))
+            {
+                int currentPage = Math.Max(pdfViewer.Page - 1, 0);
+                pdfViewer.Page = currentPage;
+                txtPagina.Text = (currentPage + 1).ToString();
+                _currentPage = currentPage + 1;
+            }
         }
 
         private void Proxima_Click(object sender, RoutedEventArgs e)
         {
-            int currentPage = Math.Min(pdfViewer.Page + 1, _totalPages);
-            pdfViewer.Page = currentPage;
-            txtPagina.Text = (currentPage + 1).ToString();
-            _currentPage = currentPage + 1;
+            if (!string.IsNullOrEmpty(_pdfInfo?.FileName))
+            {
+                int currentPage = Math.Min(pdfViewer.Page + 1, _totalPages - 1);
+                pdfViewer.Page = currentPage;
+                txtPagina.Text = (currentPage + 1).ToString();
+                _currentPage = currentPage + 1;
+            }
         }
 
         private void ZoomMenos_Click(object sender, RoutedEventArgs e)
         {
-            ZoomMenos();
+            if (!string.IsNullOrEmpty(_pdfInfo?.FileName))
+            {
+                ZoomMenos();
+            }
         }
 
         private void ZoomMenos()
@@ -448,7 +457,10 @@ namespace PDFViewLastReadedPage
 
         private void ZoomMais_Click(object sender, RoutedEventArgs e)
         {
-            ZoomMais();
+            if (!string.IsNullOrEmpty(_pdfInfo?.FileName))
+            {
+                ZoomMais();
+            }
         }
 
         private void ZoomMais() {
@@ -494,7 +506,7 @@ namespace PDFViewLastReadedPage
         }
 
         private void SetActualPage(int page) {
-            if (pdfViewer != null)
+            if (pdfViewer != null && !string.IsNullOrEmpty(_pdfInfo?.FileName))
             {
                 if (page < 1) page = 1;
                 pdfViewer.Page = Math.Min(page - 1, _totalPages);

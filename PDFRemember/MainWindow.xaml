@@ -242,7 +242,7 @@
 
             <TextBox x:Name="txtPagina"
                      Width="45"
-                     Text="1"
+                     Text="0"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
                      Margin="2"
