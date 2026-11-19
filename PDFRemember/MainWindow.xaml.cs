@@ -348,6 +348,7 @@ namespace PDFViewLastReadedPage
                 await Dispatcher.InvokeAsync(
                     async () =>
                     {
+                        //Esse dalay corrige situação em que a pagina carregada estava indo para a pagina anterior a ultima pagina no carregamento do documento.
                         await Task.Delay(500);
                         SetActualPage(_pdfInfo.NumPage);                        
                     },
